@@ -1,31 +1,18 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import path from "path";
 
+dotenv.config();
 
-// Load environment variables from correct .env file
-const envFilePath = path.resolve(process.cwd(), `.env.${process.env.NODE_ENV || "development"}`);
-const result = dotenv.config({ path: envFilePath });
-
-console.log("ENV FILE:", envFilePath);
 console.log("MYSQL_HOST:", process.env.MYSQL_HOST);
 console.log("MYSQL_USER:", process.env.MYSQL_USER);
 console.log("MYSQL_DATABASE:", process.env.MYSQL_DATABASE);
 
-if (result.error) {
-  throw new Error(`Failed to load .env file at ${envFilePath}`);
-}
-
 // Optional: Warn if JWT_SECRET is not set
 if (!process.env.JWT_SECRET) {
   console.warn("⚠️  JWT_SECRET is not defined. Make sure it's set in your .env file.");
 }
 
-// Optional: Warn if JWT_SECRET is not set
-if (!process.env.JWT_SECRET) {
-  console.warn("⚠️  JWT_SECRET is not defined. Make sure it's set in your .env file.");
-}
 
 // Import routes
 import AuthRoutes from "./routes/AuthRoutes.js";
