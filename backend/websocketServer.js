@@ -1,19 +1,15 @@
 // websocketServer.js
 import dotenv from "dotenv";
-import path from "path";
 import http from "http";
 import express from "express";
 import { Server } from "socket.io";
 
-const envFilePath = path.resolve(process.cwd(), `.env.${process.env.NODE_ENV || "development"}`);
-const result = dotenv.config({ path: envFilePath });
-
-if (result.error) {
-    throw new Error(`Failed to load .env file at ${envFilePath}`);
-}
+// Load environment variables
+dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
+
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN;
 
 const io = new Server(server, {
@@ -23,28 +19,24 @@ const io = new Server(server, {
     },
     pingTimeout: 60000,
     pingInterval: 25000,
-    maxHttpBufferSize: 1e8, // 100MB
+    maxHttpBufferSize: 1e8,
     connectTimeout: 30000
 });
 
-const users = new Map(); // username => socket.id
+const users = new Map();
 
 io.on("connection", (socket) => {
-    // console.log(`User connected: ${socket.id}`);
 
     socket.on("register", (username) => {
         users.set(username, socket.id);
-        // console.log(`${username} registered with socket ID: ${socket.id}`);
     });
 
     socket.on("joinRoom", (roomId) => {
         socket.join(roomId);
-        // console.log(`Socket ${socket.id} joined room ${roomId}`);
     });
 
     socket.on("chatMessage", ({ roomId, message }) => {
         if (roomId) {
-            // Broadcast to entire room including sender
             io.to(roomId).emit("receiveMessage", message);
         }
     });
@@ -52,7 +44,6 @@ io.on("connection", (socket) => {
     socket.on("joinGroup", (groupId) => {
         const roomId = `group_${groupId}`;
         socket.join(roomId);
-        // console.log(`Socket ${socket.id} joined group room ${roomId}`);
     });
 
     socket.on("disconnect", () => {
@@ -62,7 +53,6 @@ io.on("connection", (socket) => {
                 break;
             }
         }
-        // console.log(`User disconnected: ${socket.id}`);
     });
 
     socket.on("updateMessage", ({ roomId, message }) => {
@@ -75,19 +65,21 @@ io.on("connection", (socket) => {
 
 });
 
-// ✅ Export the `broadcast` function to send a message to a specific user
+// Export broadcast function
 export const broadcast = ({ username, type, message }) => {
     const socketId = users.get(username);
+
     if (socketId) {
-        io.to(socketId).emit("notification", { type, message });
-        // console.log(`Notification sent to ${username}:`, { type, message });
-    } else {
-        // console.log(`User ${username} not connected, message not sent.`);
+        io.to(socketId).emit("notification", {
+            type,
+            message
+        });
     }
 };
 
-server.listen(8081, () => {
-    console.log("Socket.IO server running on port 8081");
-    console.log(`FRONTEND_ORIGIN_URL: ${process.env.FRONTEND_ORIGIN}`);
+const PORT = process.env.SOCKET_PORT || 8081;
+
+server.listen(PORT, () => {
+    console.log(`Socket.IO server running on port ${PORT}`);
     console.log(`FRONTEND_ORIGIN: ${FRONTEND_ORIGIN}`);
 });
