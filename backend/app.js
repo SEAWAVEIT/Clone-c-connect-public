@@ -3,15 +3,16 @@ import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
 
-// ✅ Load environment variables from correct .env file
 
 // Load environment variables from correct .env file
 const envFilePath = path.resolve(process.cwd(), `.env.${process.env.NODE_ENV || "development"}`);
 const result = dotenv.config({ path: envFilePath });
-console.log("ENV FILE:", envFilePath);        //Added for debugging, May be should delete this
+
+console.log("ENV FILE:", envFilePath);
 console.log("MYSQL_HOST:", process.env.MYSQL_HOST);
 console.log("MYSQL_USER:", process.env.MYSQL_USER);
-console.log("MYSQL_DATABASE:", process.env.MYSQL_DATABASE)
+console.log("MYSQL_DATABASE:", process.env.MYSQL_DATABASE);
+
 if (result.error) {
   throw new Error(`Failed to load .env file at ${envFilePath}`);
 }
