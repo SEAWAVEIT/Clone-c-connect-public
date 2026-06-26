@@ -83,7 +83,7 @@
     "web-vitals": "^3.3.2"
   },
   "engines": {
-    "node": ">=10",
+    "node": "22.21.0",
     "npm": ">=6"
   },
   "browserslist": {
