@@ -4,6 +4,9 @@
   "description": "<h1>Connect Logi</h1>",
   "main": "index.js",
   "scripts": {
+    "frontend": "npm --prefix frontend start",
+    "backend": "npm --prefix backend start",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
