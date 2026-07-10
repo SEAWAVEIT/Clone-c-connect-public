@@ -81,13 +81,14 @@ export const getTheUser = async (username, password, orgcode) => {
 };
 
 export const logoutUser = async (username, orgname, orgcode) => {
+  const connection = await getConnection();
   try {
     // Determine table name based on username
     let tableName = username === "admin" ? "users" : "userkyctable";
 
     // Update the loggedin status to 0
     await connection.execute(
-      `UPDATE ${tableName} SET loggedin = 0, tokenIssuedAt = NULL WHERE username = ? AND orgname = ? AND orgcode = ?`,
+      `UPDATE ${tableName} SET loggedin = 0, tokenIssuedAt = NULL, lastSeen=NOW(), WHERE username = ? AND orgname = ? AND orgcode = ?`,
       [username, orgname, orgcode]
     );
 
