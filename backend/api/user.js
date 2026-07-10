@@ -68,7 +68,7 @@ export const getTheUser = async (username, password, orgcode) => {
     );
 
     await connection.execute(
-      `UPDATE ${tableName} SET loggedin = 1, tokenIssuedAt = NOW() WHERE username = ? AND orgcode = ?`,
+      `UPDATE ${tableName} SET loggedin = 1, tokenIssuedAt = NOW(), lastSeen = NOW() WHERE username = ? AND orgcode = ?`,
       [username, orgcode]
     );
 
