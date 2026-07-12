@@ -88,7 +88,7 @@ export const logoutUser = async (username, orgname, orgcode) => {
 
     // Update the loggedin status to 0
     await connection.execute(
-      `UPDATE ${tableName} SET loggedin = 0, tokenIssuedAt = NULL, lastSeen=NOW(), WHERE username = ? AND orgname = ? AND orgcode = ?`,
+      `UPDATE ${tableName} SET loggedin = 0, tokenIssuedAt = NULL, lastSeen=NOW() WHERE username = ? AND orgname = ? AND orgcode = ?`,
       [username, orgname, orgcode]
     );
 
@@ -105,6 +105,7 @@ export const logoutUser = async (username, orgname, orgcode) => {
 
 export const getAllUsers = async (orgname, orgcode) => {
   try {
+    const connection = await getConnection();
     const [employees] = await connection.execute(
       `SELECT * FROM userkyctable WHERE orgname = ? AND orgcode = ? And IsDeleted = 0`,
       [orgname, orgcode]
@@ -123,6 +124,7 @@ export const getAllUsers = async (orgname, orgcode) => {
 // Get next organization ID
 export const getNextRegistrationId = async (req, res) => {
   try {
+    const connection = await getConnection();
     // First, try to find the smallest missing ID
     const [gapRows] = await connection.query(`
             SELECT t1.id + 1 AS nextId
@@ -153,6 +155,7 @@ export const getNextRegistrationId = async (req, res) => {
 // REGISTER API
 export const registerClient = async (req, res) => {
   try {
+    const connection = await getConnection();
     // Extract basic fields
     const {
       organizationName,
