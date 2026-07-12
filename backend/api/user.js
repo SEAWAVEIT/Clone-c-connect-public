@@ -180,7 +180,7 @@ export const registerClient = async (req, res) => {
       chaBranchLicence,
     } = req.body;
 
-    console.log("Received fields:", Object.keys(req.files));
+    console.log("Received fields:", Object.keys(req.files || {}));
     console.log("est date:", establishedDate);
 
     let directors = JSON.parse(req.body.directors || "[]");
@@ -192,7 +192,7 @@ export const registerClient = async (req, res) => {
     const directorPhotos = Array(directors.length).fill(null);
     const directorDocs = Array(directors.length).fill(null);
 
-    Object.entries(req.files).forEach(([fieldName, filesArray]) => {
+    Object.entries(req.files || {}).forEach(([fieldName, filesArray]) => {
       if (!filesArray?.[0]) return;
 
       const match = fieldName.match(/^director-(\d+)-(photo|doc)$/);
@@ -222,7 +222,7 @@ export const registerClient = async (req, res) => {
     const services = req.body.services ? req.body.services.split(",") : [];
 
     console.log("BODY:", req.body);
-    console.log("FILES:", Object.keys(req.files));
+    console.log("FILES:", Object.keys(req.files || {}));
 
     // STEP 1: Validate credentials
     if (!username || !password || !organizationName || !organizationCode) {
