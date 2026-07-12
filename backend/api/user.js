@@ -389,6 +389,7 @@ const insertUser = async (
   logoFilename
 ) => {
   try {
+    const connection = await getConnection();
     const [rows] = await connection.execute(
       `INSERT INTO users (username, password, orgcode, orgname, userphoto) VALUES (?, ?, ?, ?, ?)`,
       [username, password, organizationCode, orgname, logoFilename]
@@ -408,6 +409,7 @@ export const updateUserPassword = async (
   orgcode
 ) => {
   try {
+    const connection = await getConnection();
     // Insert into the approval table for admin's approval before changing the password
     const [result] = await connection.execute(
       `INSERT INTO adminchangeapproval (username, role, newpassword,remark, orgcode) 
@@ -428,6 +430,7 @@ export const updateUserPassword = async (
 // get user Name and role
 export const getApprover = async () => {
   try {
+    const connection = await getConnection();
     const [rows] = await connection.execute(
       "SELECT id, username, role, newpassword, remark, status, created_at,orgcode FROM adminchangeapproval"
     );
@@ -447,6 +450,7 @@ export const getApprover = async () => {
 
 export const approvePasswordChange = async (username) => {
   try {
+    const connection = await getConnection();
     // Fetch the request data from adminchangeapproval
     // console.log(`Fetching request for username: ${username}`);
     const [request] = await connection.execute(
@@ -483,6 +487,7 @@ export const approvePasswordChange = async (username) => {
 // Reject Password Change
 export const rejectPasswordChange = async (username) => {
   try {
+    const connection = await getConnection();
     let date = new Date();
     // Remove the request from the adminchangeapproval table
     await connection.execute(
@@ -521,6 +526,7 @@ const storeOwnBranch = async (
   headdocument
 ) => {
   try {
+    const connection = await getConnection();
     const codecode = extractNumbersAfterAt(organizationCode);
     // const firstEmptyIndex = organizationName.indexOf(" ");
     const newbranchcode = branchName + "-" + codecode;
@@ -569,6 +575,7 @@ const storeOwnAdminKYC = async (
   logoPath
 ) => {
   try {
+    const connection = await getConnection();
     // Prepare sanitized date of birth
     let dateOfBirth = null;
     if (establishedDate) {
@@ -624,6 +631,7 @@ const storeOwnAdminKYC = async (
 
 export const getLegalName = async (req, res) => {
   try {
+    const connection = await getConnection();
     const { orgcode } = req.query;
 
     if (!orgcode) {
@@ -712,6 +720,7 @@ export const storeBranch = async (req, res) => {
 
 export const getOwnBranches = async (orgname, orgcode) => {
   try {
+    const connection = await getConnection();
     const [rows] = await connection.execute(
       `SELECT * FROM ownbranches WHERE orgname = ? AND orgcode = ? And  IsDeleted = 0`,
       [orgname, orgcode]
@@ -724,6 +733,7 @@ export const getOwnBranches = async (orgname, orgcode) => {
 
 export const fetchBranchskhudka = async (orgname, orgcode, username) => {
   try {
+    const connection = await getConnection();
     let query;
     let params;
     if (username === "admin") {
@@ -749,6 +759,7 @@ export const deletekhudkaBranch = async (
   DeleteRemark
 ) => {
   try {
+    const connection = await getConnection();
     console.log(
       "backend2",
       deletedat,
@@ -870,9 +881,10 @@ export const updatedOwnBranch = async (req, res) => {
 
 export const getApproverNameinOrg = async (orgcode) => {
   try {
+    const connection = await getConnection();
     const [approverdata] = await connection.execute(
       `SELECT * FROM approvername WHERE orgcode = ?`,
-      []
+      [orgcode]
     );
     const data = approverdata.filter((item) => {
       return item.uniquevalue[0] === "OrgButton";
@@ -916,33 +928,39 @@ export const getApproverNameinOrg = async (orgcode) => {
 // };
 
 export const getUserDetails = async (orgname, orgcode, employeename) => {
-  const [rows] = await connection.execute(
-    `SELECT 
-       COALESCE(ti.jobnumber, te.jobnumber) AS jobnumber,
-       COALESCE(ti.ownbranchname, te.ownbranchname) AS ownbranchname,
-       COALESCE(ti.clientname, te.clientname) AS clientname,
-       sw.workflowname AS milestone,
-       COALESCE(ti.plandate, te.plandate) AS deadline,
-       COALESCE(ti.actualdate, te.actualdate) AS completiondate,
-       COALESCE(ti.timedelay, te.timedelay) AS timedelay,
-       COALESCE(ti.status, te.status) AS status
-     FROM setworkflow sw
-     LEFT JOIN trackingimport ti
-       ON ti.tatimpcolumn = sw.workflowname 
-       AND ti.lobname = sw.lobname
-       AND ti.IsDeleted = 0
-     LEFT JOIN trackingexport te
-       ON te.tatexpcolumn = sw.workflowname 
-       AND te.lobname = sw.lobname
-       AND te.IsDeleted = 0
-     WHERE 
-       sw.orgname = ? 
-       AND sw.orgcode = ? 
-       AND JSON_CONTAINS(sw.assignedperson, JSON_OBJECT('username', ?))
-       AND sw.IsDeleted = 0
-       AND (ti.jobdoneby = ? OR te.jobdoneby = ?)`,
+  try {
+    const connection = await getConnection();
+    const [rows] = await connection.execute(
+      `SELECT 
+         COALESCE(ti.jobnumber, te.jobnumber) AS jobnumber,
+         COALESCE(ti.ownbranchname, te.ownbranchname) AS ownbranchname,
+         COALESCE(ti.clientname, te.clientname) AS clientname,
+         sw.workflowname AS milestone,
+         COALESCE(ti.plandate, te.plandate) AS deadline,
+         COALESCE(ti.actualdate, te.actualdate) AS completiondate,
+         COALESCE(ti.timedelay, te.timedelay) AS timedelay,
+         COALESCE(ti.status, te.status) AS status
+       FROM setworkflow sw
+       LEFT JOIN trackingimport ti
+         ON ti.tatimpcolumn = sw.workflowname 
+         AND ti.lobname = sw.lobname
+         AND ti.IsDeleted = 0
+       LEFT JOIN trackingexport te
+         ON te.tatexpcolumn = sw.workflowname 
+         AND te.lobname = sw.lobname
+         AND te.IsDeleted = 0
+       WHERE 
+         sw.orgname = ? 
+         AND sw.orgcode = ? 
+         AND JSON_CONTAINS(sw.assignedperson, JSON_OBJECT('username', ?))
+         AND sw.IsDeleted = 0
+         AND (ti.jobdoneby = ? OR te.jobdoneby = ?)`,
     [orgname, orgcode, employeename, employeename, employeename]
   );
 
   return rows;
+  } catch (error){
+    console.error("Error fetching user details:", error.message);
+    throw error;
+  }
 };
