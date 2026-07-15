@@ -12,14 +12,24 @@ class SocketManager {
       return this.socket;
     }
 
-    this.socket = io("http://localhost:8081", {
-      transports: ['websocket', 'polling'],
-      timeout: 5000,
-      reconnection: true,
-      reconnectionDelay: 1000,
-      reconnectionAttempts: this.maxReconnectAttempts,
-      forceNew: false
-    });
+const SOCKET_URL = process.env.REACT_APP_API_URL;
+
+if (!SOCKET_URL) {
+  console.warn("REACT_APP_API_URL is not set, using localhost");
+}
+
+const socketUrl = SOCKET_URL || "http://localhost:8081";
+
+console.log("SOCKET URL USED:", socketUrl);
+
+this.socket = io(socketUrl, {
+  transports: ["websocket", "polling"],
+  timeout: 5000,
+  reconnection: true,
+  reconnectionDelay: 1000,
+  reconnectionAttempts: this.maxReconnectAttempts,
+  forceNew: false
+});
 
     this.socket.on('connect', () => {
       console.log('Socket connected:', this.socket.id);
