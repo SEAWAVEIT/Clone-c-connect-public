@@ -185,7 +185,7 @@ const BankDetails = () => {
   }, [theme]);
 
   // Initialize data
-  useEffect(() => {
+  useEffect(() => {                       //need to make changes here after fixing deployment issue in render
     getbankdetails();
     getBranches();
 
