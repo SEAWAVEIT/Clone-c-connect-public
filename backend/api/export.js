@@ -250,6 +250,11 @@ export const storeExportJob = async (
       jobNumberlatest += `/${count}`;
     }
 
+docReceivedOn = moment(
+  docReceivedOn,
+  "YYYY-MM-DD hh:mm A"
+).format("YYYY-MM-DD HH:mm:ss");
+
     const [result] = await connection.execute(
       `INSERT INTO approvalexpjob 
             (jobnumber, jobdate, docreceivedon, transportmode, customhouse, ownbooking, deliverymode, noofcontainer, owntransportation, betype, consignmenttype, cfsname, shippinglinename, typesofContainer, dockExecutive, OwnTransportFrom, OwnTransportTo, OwnTransportPickupDate, OwnTransportCurrentDate, containerNoAndWeight, bltype, bltypenum, jobowner, orgcode, orgname, benumber, count, branchname, branchcode, uniquevalue, createdat , exportername)
