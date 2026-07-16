@@ -85,10 +85,13 @@ const BankDetails = () => {
   );
 
   // Get organization data from localStorage once
-  const orgData = {
+ const orgData = React.useMemo(
+  () => ({
     orgname: localStorage.getItem("orgname"),
     orgcode: localStorage.getItem("orgcode"),
-  };
+  }),
+  []
+);
 
   const fetchcontrols = async () => {
     try {
@@ -120,7 +123,7 @@ const BankDetails = () => {
 
   // API calls with error handling
   const fetchData = useCallback(async (endpoint, params = {}) => {
-    fetchcontrols();
+    
     try {
       const response = await axios.get(`${API_BASE_URL}/${endpoint}`, {
         params,
@@ -185,7 +188,8 @@ const BankDetails = () => {
   }, [theme]);
 
   // Initialize data
-  useEffect(() => {                       //need to make changes here after fixing deployment issue in render
+  useEffect(() => {   
+    fetchcontrols(); 
     getbankdetails();
     getBranches();
 
