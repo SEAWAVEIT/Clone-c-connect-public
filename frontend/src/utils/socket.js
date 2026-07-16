@@ -16,11 +16,11 @@ class SocketManager {
 
     if (!SOCKET_URL) {
       throw new Error(
-        "REACT_APP_API_URL is not defined. Please configure it in your Vercel environment variables."
+        "REACT_APP_API_URL is not defined. Please configure it in your environment variables."
       );
     }
 
-    console.log("Connecting Socket.IO to:", SOCKET_URL);
+    console.log("Connecting to Socket.IO server:", SOCKET_URL);
 
     this.socket = io(SOCKET_URL, {
       transports: ["websocket", "polling"],
@@ -44,15 +44,15 @@ class SocketManager {
     });
 
     this.socket.on("reconnect_attempt", (attempt) => {
-      console.log(`🔄 Reconnect attempt ${attempt}`);
+      console.log("🔄 Reconnect attempt:", attempt);
     });
 
     this.socket.on("reconnect", (attempt) => {
-      console.log(`✅ Reconnected after ${attempt} attempt(s)`);
+      console.log("✅ Reconnected after", attempt, "attempt(s)");
     });
 
     this.socket.on("reconnect_failed", () => {
-      console.error("❌ Failed to reconnect to Socket.IO server.");
+      console.error("❌ Failed to reconnect to the Socket.IO server.");
     });
 
     return this.socket;
@@ -62,6 +62,7 @@ class SocketManager {
     if (!this.socket) {
       return this.connect();
     }
+
     return this.socket;
   }
 
@@ -76,4 +77,4 @@ class SocketManager {
 const socketManager = new SocketManager();
 
 export const getSocket = () => socketManager.getSocket();
-export default socketManager;
+export { socketManager };
