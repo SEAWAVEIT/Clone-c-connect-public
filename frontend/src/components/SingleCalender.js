@@ -238,7 +238,7 @@ const SingleCalender = ({
   const formatDateTimeLocal = (date) => {
     if (!date) return "";
     if (renderTime) {
-      return moment(date).format("YYYY-MM-DD HH:mm A");
+      return moment(date).format("YYYY-MM-DD hh:mm A");
     } else {
       return moment(date).format("YYYY-MM-DD");
     }
