@@ -123,9 +123,14 @@ router.post("/storeJob", async (req, res) => {
 
     res.status(200).json(storeandcreateJob);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Error storing job" });
-  }
+  console.error("IMPORT ROUTE ERROR:", error);
+
+  res.status(500).json({
+    message: "Error storing job",
+    error: error.message,
+    stack: error.stack,
+  });
+}
 });
 
 // Route to update job number
