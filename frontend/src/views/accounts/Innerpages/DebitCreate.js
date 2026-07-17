@@ -372,10 +372,13 @@ const DebitCreate = () => {
   };
 
   const AddDebit = async (action) => {
+    console.log("ADD DEBIT START", action);
     // Add this at the beginning
     if (!validateDebitForm(formData)) {
+      console.log("VALIDATION FAILED");
       return;
     }
+    console.log("VALIDATION PASSED");
 
     const formDataToSend = {
       date: formData.date,
@@ -407,7 +410,7 @@ const DebitCreate = () => {
         branchcode: localStorage.getItem("branchcodeofemp"),
       });
 
-      if (response.status === 200) {
+      if (response.status >= 200 && response.status < 300) {
         toast.success("Debit details added successfully");
         setFormData({
           date: "",
@@ -555,7 +558,7 @@ const DebitCreate = () => {
         }
       );
 
-      if (response.status === 200) {
+      if (response.status >= 200 && response.status < 300) {
         toast.success("Debit details updated successfully");
         navigate("/PaymentSheetDebit");
       }
