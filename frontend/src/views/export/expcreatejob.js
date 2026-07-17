@@ -1533,17 +1533,20 @@ const expcreatejob = () => {
                           >
                             <input
                               type="text"
-                              placeholder="Number"
+                              placeholder="Example: ABCU1234567"
                               value={container.containerNo}
                               className="exp-create-tabledata"
                               onChange={(e) =>
                                 handleContainerWeightChange(
                                   index,
                                   "containerNo",
-                                  e.target.value
+                                  e.target.value.toUpperCase()
                                 )
                               }
                             />
+                            <small style={{ color: "gray", fontSize: "10px", display: "block" }}>
+                                Format: 3-4 letters + 6-8 digits (Example: ABC123456)
+                            </small>
                           </td>
                           <td
                             style={{
