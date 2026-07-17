@@ -301,7 +301,7 @@ const DebitCreate = () => {
       return false;
     }
 
-    const utrRegex = /^[A-Z]{4}[0-9]{1}[0-9]{2}[0-3][0-9]{2}[0-9]{6,}$/;
+    const utrRegex = /^[A-Za-z0-9]{10,30}$/;
 
     if (!formData.utrDetails || formData.utrDetails.trim() === "") {
       toast.error("UTR Details are required");
