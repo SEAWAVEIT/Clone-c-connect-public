@@ -47,7 +47,6 @@ export const storeJob = async (
   OwnTransportCurrentDate,
   containerNoAndWeight
 ) => {
-  console.log("docReceivedOn before moment:", docReceivedOn);
   try {
     const [rows] = await connection.execute(
       `SELECT * FROM customjobnumber WHERE orgname = ? AND orgcode = ? AND branchname = ? AND branchcode = ?`,
@@ -141,7 +140,6 @@ export const storeJob = async (
   docReceivedOn,
   "YYYY-MM-DD hh:mm A"
 ).format("YYYY-MM-DD HH:mm:ss");
-    console.log("docReceivedOn after moment:", docReceivedOn);
     const [result] = await connection.execute(
       `INSERT INTO approvalimpjob 
     (jobnumber, jobdate, docreceivedon, transportmode, customhouse, ownbooking, deliverymode, noofcontainer, owntransportation, betype, consignmenttype, cfsname, shippinglinename,typesofContainer, dockExecutive, bltype, bltypenum,OwnTransportFrom,OwnTransportTo , OwnTransportPickupDate , OwnTransportCurrentDate , containerNoAndWeight,  jobowner, orgcode, orgname, freedays, blstatus, benumber, shippinglinebond, count, branchname, branchcode, uniquevalue, createdat)
