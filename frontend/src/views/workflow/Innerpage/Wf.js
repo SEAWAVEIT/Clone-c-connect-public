@@ -145,7 +145,7 @@ const Wf = () => {
 
   if (location.pathname === "/workflow") {
     localStorage.removeItem("idofworkflow");
-    localStorage.removeItem("workflowlobname");
+    localStorage.removeItem("workflowjobname");
     localStorage.removeItem("workflowbranchname");
     localStorage.removeItem("workflowimportername");
     // localStorage.removeItem("workflowowntran");
@@ -265,7 +265,7 @@ const Wf = () => {
           id: selectedWorkflow.id,
           importername: selectedWorkflow.importername,
           ownbranchname: selectedWorkflow.ownbranchname,
-          lobname: selectedWorkflow.lobname,
+          jobname: selectedWorkflow.jobname,
           deletedby: localStorage.getItem("username"),
           deletedat: currentDate,
           DeleteRemark: remark,
@@ -325,7 +325,7 @@ const Wf = () => {
   async function handleEdit(workflow) {
     try {
       localStorage.setItem("idofworkflow", workflow.id);
-      localStorage.setItem("workflowlobname", workflow.lobname);
+      localStorage.setItem("workflowjobname", workflow.jobname);
       localStorage.setItem("workflowbranchname", workflow.ownbranchname);
       localStorage.setItem("workflowimportername", workflow.importername);
       // localStorage.setItem("workflowowntran", workflow.owntransport);
@@ -642,7 +642,7 @@ const Wf = () => {
                           transition: "background-color 0.3s ease",
                         }}
                       >
-                        {workflow.lobname}
+                        {workflow.jobname}
                       </td>
                       <td
                         style={{
@@ -704,7 +704,7 @@ const Wf = () => {
                                     <CTableDataCell>{workflow.ownbranchname}</CTableDataCell>
 
                                     <CTableDataCell>{workflow.importername}</CTableDataCell>
-                                    <CTableDataCell>{workflow.lobname}</CTableDataCell>
+                                    <CTableDataCell>{workflow.jobname}</CTableDataCell>
                                     <CTableDataCell>
                                         <Link to={'/setWorkflow'} target='_blank' onClick={() => handleEdit(workflow)}>Edit</Link>
                                         <CButton onClick={() => handleDelete(workflow)}>Delete</CButton>
@@ -833,8 +833,8 @@ const Wf = () => {
                 </option>
                 {allineofbusinesses &&
                   allineofbusinesses.map((item, index) => (
-                    <option key={index} value={item.lobname}>
-                      {item.lobname}
+                    <option key={index} value={item.jobname}>
+                      {item.jobname}
                     </option>
                   ))}
                 <option></option>
@@ -851,9 +851,9 @@ const Wf = () => {
                         className="wf-item-dropdown"
                         key={index}
                         value={selectedLOB}
-                        onClick={() => setselectedLOB(item.lobname)}
+                        onClick={() => setselectedLOB(item.jobname)}
                       >
-                        {item.lobname}
+                        {item.jobname}
                       </CDropdownItem>
                     ))}
                 </CDropdownMenu>
@@ -912,8 +912,8 @@ const Wf = () => {
           dropdownSetValue={setWorkflowsDataPopup}
           dropdownValue2={WorkFlowsDataPopup.lob || ""}
           dropdownOptions2={allineofbusinesses.map((data) => ({
-            label: data.lobname,
-            value: data.lobname,
+            label: data.jobname,
+            value: data.jobname,
           }))}
           dropdownSetValue2={setWorkflowsDataPopup}
           dropdownValue3={WorkFlowsDataPopup.org || ""}
