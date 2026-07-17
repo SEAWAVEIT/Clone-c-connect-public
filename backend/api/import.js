@@ -187,8 +187,10 @@ export const storeJob = async (
 
     return row;
   } catch (error) {
-    console.error("Error while executing SQL query:", error);
-  }
+  console.error("========== STORE JOB ERROR ==========");
+  console.error(error);
+  throw error;
+}
 };
 
 export const updateJobNumber = async (
