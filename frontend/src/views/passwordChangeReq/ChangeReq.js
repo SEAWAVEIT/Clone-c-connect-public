@@ -166,18 +166,25 @@ const PasswordApprover = () => {
   return (
     <div>
       <div className="refreshjob-button ">
-        <Link
+        <button
+          onClick={refreshData}
           type="submit"
           onClick={refreshData}
           className="link-btn"
           style={{
             marginLeft: "20px",
-            height: "fit-content",
+            height: "40-px",
+            width: "40-px",
             position: "absolute",
+            zIndex: 10,
+            cursor: "pointer",
+            border: "none",
+            background: "transparent",
+            padding: 0,
           }}
         >
           <RefreshBtn />
-        </Link>
+        </button>
       </div>
       <div
         className="page-title"
