@@ -47,6 +47,12 @@ export const uploadKYCData = async (req, res) => {
       createdby,
     } = req.body;
 
+    console.log("KYC fields:", {
+  role,
+  department,
+  createdby
+});
+
     if (!fullname || !username || !orgname || !orgcode) {
       return res.status(400).json({ error: "Missing required fields." });
     }
