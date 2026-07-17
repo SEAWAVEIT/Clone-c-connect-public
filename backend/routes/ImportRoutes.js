@@ -84,8 +84,6 @@ router.post("/storeJob", async (req, res) => {
       OwnTransportCurrentDate,
       containerNoAndWeight,
     } = req.body;
-    console.log("transport mode route", transportMode);
-    console.log("Before storeJob");
     const storeandcreateJob = await storeJob(
       jobDate,
       docReceivedOn,
@@ -119,16 +117,11 @@ router.post("/storeJob", async (req, res) => {
       OwnTransportCurrentDate,
       containerNoAndWeight
     );
-    console.log("After storeJob", storeandcreateJob);
-
     res.status(200).json(storeandcreateJob);
   } catch (error) {
-  console.error("IMPORT ROUTE ERROR:", error);
-
+  console.error(error);
   res.status(500).json({
     message: "Error storing job",
-    error: error.message,
-    stack: error.stack,
   });
 }
 });
