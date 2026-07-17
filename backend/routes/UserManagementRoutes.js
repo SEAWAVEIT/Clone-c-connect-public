@@ -289,6 +289,7 @@ router.get('/fetchNavSections', fetchNavSections);
 
 router.get("/fetchaccesscontrols", async (req, res) => {
   try {
+    console.log("fetchaccesscontrols query:", req.query);
     const { username, orgname, orgcode, branchname, branchcode, type } = req.query;
     const fetchaccesscontrols = await getAccessControls(
       username,
