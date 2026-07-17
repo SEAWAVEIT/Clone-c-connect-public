@@ -4,7 +4,7 @@ import cron from "node-cron";
 const uniquevalue = "ImpJobButton";
 import path from "path";
 import fs from "fs";
-
+import moment from "moment";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { console } from "inspector";
@@ -13,7 +13,9 @@ const UPLOADS_DIR = path.resolve("uploads");
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const connection = await connectMySQL();
-
+console.log("docReceivedOn:", docReceivedOn);
+console.log("OwnTransportPickupDate:", OwnTransportPickupDate);
+console.log("OwnTransportCurrentDate:", OwnTransportCurrentDate);
 export const storeJob = async (
   jobDate,
   docReceivedOn,
@@ -137,6 +139,10 @@ export const storeJob = async (
     if (!countAppended) {
       jobNumberlatest += `/${count}`;
     }
+    docReceivedOn = moment(
+  docReceivedOn,
+  "YYYY-MM-DD hh:mm A"
+).format("YYYY-MM-DD HH:mm:ss");
     const [result] = await connection.execute(
       `INSERT INTO approvalimpjob 
     (jobnumber, jobdate, docreceivedon, transportmode, customhouse, ownbooking, deliverymode, noofcontainer, owntransportation, betype, consignmenttype, cfsname, shippinglinename,typesofContainer, dockExecutive, bltype, bltypenum,OwnTransportFrom,OwnTransportTo , OwnTransportPickupDate , OwnTransportCurrentDate , containerNoAndWeight,  jobowner, orgcode, orgname, freedays, blstatus, benumber, shippinglinebond, count, branchname, branchcode, uniquevalue, createdat)
