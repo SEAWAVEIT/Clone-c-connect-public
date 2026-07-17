@@ -322,7 +322,7 @@ const Debit = () => {
   }
 
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(filteredDetails);
+    const worksheet = XLSX.utils.json_to_sheet(filteredDebit);
 
     // List of fields to focus on for width adjustment
     const fields = [
@@ -411,7 +411,7 @@ const Debit = () => {
         : null;
 
       // Extract the full job number and convert to lowercase
-      const jobNumberFull = debit.jobnumber;
+      const jobNumberFull = debit.jobnumber || "";
       const debitJobNo = jobNumberFull.toLowerCase();
       // Split the job number by "/" assuming the format: Mode/City/Type/...
       const parts = debitJobNo.split("/");
@@ -465,6 +465,7 @@ const Debit = () => {
         referenceFilter // Add this condition
       );
     });
+    
 
     const total = filtered.reduce(
       (sum, debit) => sum + Number(debit.netpaymentamount),
@@ -567,9 +568,9 @@ const Debit = () => {
             )}
             {(checkUsername === "admin" || useDownload) && (
               <div className="downloadjob-button">
-                <Link onClick={exportToExcel} className="link-btn">
+                <div onClick={exportToExcel} className="link-btn">
                   <DownlodBtn />
-                </Link>
+                </div>
               </div>
             )}
           </CCardBody>
