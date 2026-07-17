@@ -218,10 +218,11 @@ export const getAccessControls = async (
   orgcode,
   branchname,
   branchcode,
-  type,
+  type
 ) => {
   try {
-    console.log("getAccessControls params:", {
+    console.log("========== ACCESS CONTROL ==========");
+    console.log({
       username,
       orgname,
       orgcode,
@@ -230,12 +231,30 @@ export const getAccessControls = async (
       type,
     });
 
+    const params = [
+      username,
+      orgname,
+      orgcode,
+      branchname,
+      branchcode,
+      type,
+    ];
+
+    if (params.some((p) => p === undefined)) {
+      console.error("Undefined parameter detected:", params);
+      return [];
+    }
+
     const [accessControls] = await connection.execute(
-      `SELECT
-        section, control
-      FROM accesscontrol
-      WHERE username = ? AND orgname = ? AND orgcode = ? AND branchname = ? AND branchcode = ? AND section = ?`,
-      [username, orgname, orgcode, branchname, branchcode, type]
+      `SELECT section, control
+       FROM accesscontrol
+       WHERE username = ?
+         AND orgname = ?
+         AND orgcode = ?
+         AND branchname = ?
+         AND branchcode = ?
+         AND section = ?`,
+      params
     );
 
     return accessControls;
@@ -244,6 +263,9 @@ export const getAccessControls = async (
     throw error;
   }
 };
+
+
+
 export const getBinAccessControls = async (
   username,
   orgname,
