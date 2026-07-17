@@ -13,9 +13,6 @@ const UPLOADS_DIR = path.resolve("uploads");
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const connection = await connectMySQL();
-console.log("docReceivedOn:", docReceivedOn);
-console.log("OwnTransportPickupDate:", OwnTransportPickupDate);
-console.log("OwnTransportCurrentDate:", OwnTransportCurrentDate);
 export const storeJob = async (
   jobDate,
   docReceivedOn,
@@ -50,6 +47,9 @@ export const storeJob = async (
   OwnTransportCurrentDate,
   containerNoAndWeight
 ) => {
+  console.log("docReceivedOn:", docReceivedOn);
+  console.log("OwnTransportPickupDate:", OwnTransportPickupDate);
+  console.log("OwnTransportCurrentDate:", OwnTransportCurrentDate);
   try {
     const [rows] = await connection.execute(
       `SELECT * FROM customjobnumber WHERE orgname = ? AND orgcode = ? AND branchname = ? AND branchcode = ?`,
