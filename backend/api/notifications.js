@@ -3,19 +3,41 @@ import { connectMySQL } from "../config/sqlconfig.js";
 const connection = await connectMySQL();
 
 
-export const fetchNotifications = async (orgname, orgcode) => {
-    try {
-        const [rows] = await connection.execute(`SELECT * FROM notifications WHERE orgname = ? AND orgcode = ?`, [orgname, orgcode]);
-        const [orgrows] = await connection.execute(`SELECT * FROM organizations WHERE orgname = ? AND orgcode = ?`, [orgname, orgcode]);
 
-        return {
-            notifications: rows,
-            organizations: orgrows
-        };
-    } catch (error) {
-        console.log(error);
+
+export const fetchNotifications = async (orgname, orgcode) => {
+  try {
+    console.log("fetchNotifications ->", {
+      orgname,
+      orgcode,
+    });
+
+    if (orgname === undefined || orgcode === undefined) {
+      throw new Error(
+        `Missing parameters: orgname=${orgname}, orgcode=${orgcode}`
+      );
     }
-}
+
+    const [rows] = await connection.execute(
+      `SELECT * FROM notifications WHERE orgname = ? AND orgcode = ?`,
+      [orgname, orgcode]
+    );
+
+    const [orgrows] = await connection.execute(
+      `SELECT * FROM organizations WHERE orgname = ? AND orgcode = ?`,
+      [orgname, orgcode]
+    );
+
+    return {
+      notifications: rows,
+      organizations: orgrows,
+    };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 
 
 
