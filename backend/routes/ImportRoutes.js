@@ -85,7 +85,7 @@ router.post("/storeJob", async (req, res) => {
       containerNoAndWeight,
     } = req.body;
     console.log("transport mode route", transportMode);
-
+    console.log("Before storeJob");
     const storeandcreateJob = await storeJob(
       jobDate,
       docReceivedOn,
@@ -119,6 +119,7 @@ router.post("/storeJob", async (req, res) => {
       OwnTransportCurrentDate,
       containerNoAndWeight
     );
+    console.log("After storeJob", storeandcreateJob);
 
     res.status(200).json(storeandcreateJob);
   } catch (error) {
