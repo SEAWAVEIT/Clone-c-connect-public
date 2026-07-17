@@ -30,7 +30,7 @@ export const storeWorkflow = async (
 
     const [row] = await connection.execute(
       `
-            INSERT INTO setworkflow (orgname, orgcode, lobname, ownbranchname, importername, createdby , owntransport , ownbooking , consignmenttype , betype,duration, days, hours, minutes, workflowmilestone, plandatechange, workflowname, assignedperson, reminderdays, reminderhours, reminderminutes) 
+            INSERT INTO setworkflow (orgname, orgcode, jobname, ownbranchname, importername, createdby , owntransport , ownbooking , consignmenttype , betype,duration, days, hours, minutes, workflowmilestone, plandatechange, workflowname, assignedperson, reminderdays, reminderhours, reminderminutes) 
             VALUES (?,?,?,?,?,?,?, ?,?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?)`,
       [
         orgname,
@@ -85,7 +85,7 @@ export const createOverviewofWorkflow = async (
 ) => {
   try {
     const [row] = await connection.execute(
-      "INSERT INTO workflow (orgname, orgcode, lobname, ownbranchname, importername , Date , createdby) VALUES (?,?,?,?,?,?,?)",
+      "INSERT INTO workflow (orgname, orgcode, jobname, ownbranchname, importername , Date , createdby) VALUES (?,?,?,?,?,?,?)",
       [orgname, orgcode, lob, branch, client, currentDate, username]
     );
     return row;
@@ -100,7 +100,7 @@ export const deletedWorkflowRow = async (
   id,
   importername,
   ownbranchname,
-  lobname,
+  jobname,
   deletedby,
   deletedat,
   DeleteRemark
@@ -118,7 +118,7 @@ export const deletedWorkflowRow = async (
     if (workflowResult.affectedRows > 0) {
       // If deletion from workflow was successful, delete from the setworkflow table
       const [setWorkFlowDeleted] = await connection.execute(
-        "UPDATE setworkflow set IsDeleted = ? , deletedby = ? , deletedAt = ? , DeleteRemark = ? WHERE orgname = ? AND orgcode = ? AND importername = ? AND ownbranchname = ? AND lobname = ?",
+        "UPDATE setworkflow set IsDeleted = ? , deletedby = ? , deletedAt = ? , DeleteRemark = ? WHERE orgname = ? AND orgcode = ? AND importername = ? AND ownbranchname = ? AND jobname = ?",
         [
           isDeleted,
           deletedby,
@@ -128,7 +128,7 @@ export const deletedWorkflowRow = async (
           orgcode,
           importername,
           ownbranchname,
-          lobname,
+          jobname,
         ]
       );
 
@@ -154,12 +154,12 @@ export const getSetAllWorkflow = async (
   orgcode,
   branchname,
   importername,
-  lobname
+  jobname
 ) => {
   try {
     const [rows] = await connection.execute(
-      "SELECT * FROM setworkflow WHERE orgname = ? AND orgcode = ? AND ownbranchname = ? AND importername = ? AND lobname = ? AND IsDeleted = 0",
-      [orgname, orgcode, branchname, importername, lobname]
+      "SELECT * FROM setworkflow WHERE orgname = ? AND orgcode = ? AND ownbranchname = ? AND importername = ? AND jobname = ? AND IsDeleted = 0",
+      [orgname, orgcode, branchname, importername, jobname]
     );
     return rows;
   } catch (error) {
@@ -173,14 +173,14 @@ export const deletesetworkflow = async (
   orgcode,
   importername,
   ownbranchname,
-  lobname,
+  jobname,
   deletedby,
   deletedat,
   DeleteRemark
 ) => {
   try {
     const [row] = await connection.execute(
-      "UPDATE setworkflow SET deletedby = ?, deletedAt = ?, DeleteRemark = ?, IsDeleted = 1 WHERE id = ? AND orgname = ? AND orgcode = ? AND importername = ? AND ownbranchname = ? AND lobname = ?",
+      "UPDATE setworkflow SET deletedby = ?, deletedAt = ?, DeleteRemark = ?, IsDeleted = 1 WHERE id = ? AND orgname = ? AND orgcode = ? AND importername = ? AND ownbranchname = ? AND jobname = ?",
       [
         deletedby,
         deletedat,
@@ -190,7 +190,7 @@ export const deletesetworkflow = async (
         orgcode,
         importername,
         ownbranchname,
-        lobname,
+        jobname,
       ]
     );
 
