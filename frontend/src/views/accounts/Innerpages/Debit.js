@@ -351,7 +351,10 @@ const Debit = () => {
     const colWidths = {};
     debitDetails.forEach((row) => {
       fields.forEach((field) => {
-        const cellValue = row[field] !== undefined ? row[field].toString() : "";
+        const cellValue = 
+          row[field] !== undefined && row[field] !== null
+            ? row[field].toString()
+              : "";
         const cellLength = cellValue.length;
 
         // Save max length for the current field
