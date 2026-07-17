@@ -7,10 +7,7 @@ const connection = await connectMySQL();
 
 export const fetchNotifications = async (orgname, orgcode) => {
   try {
-    console.log("fetchNotifications ->", {
-      orgname,
-      orgcode,
-    });
+    
 
     if (orgname === undefined || orgcode === undefined) {
       throw new Error(
