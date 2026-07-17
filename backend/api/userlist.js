@@ -221,19 +221,29 @@ export const getAccessControls = async (
   type,
 ) => {
   try {
+    console.log("getAccessControls params:", {
+      username,
+      orgname,
+      orgcode,
+      branchname,
+      branchcode,
+      type,
+    });
+
     const [accessControls] = await connection.execute(
-      `SELECT 
+      `SELECT
         section, control
-      FROM accesscontrol 
+      FROM accesscontrol
       WHERE username = ? AND orgname = ? AND orgcode = ? AND branchname = ? AND branchcode = ? AND section = ?`,
       [username, orgname, orgcode, branchname, branchcode, type]
     );
+
     return accessControls;
   } catch (error) {
     console.error("Error fetching access controls:", error);
+    throw error;
   }
 };
-
 export const getBinAccessControls = async (
   username,
   orgname,
