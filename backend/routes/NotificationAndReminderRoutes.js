@@ -46,57 +46,19 @@ router.get("/fetchnotifications", async (req, res) => {
   try {
     const { orgname, orgcode } = req.query;
 
-    console.log("===== FETCH NOTIFICATIONS =====");
-    console.log("Query:", req.query);
-    console.log("orgname:", orgname);
-    console.log("orgcode:", orgcode);
-
     const fetchednotifications = await fetchNotifications(orgname, orgcode);
 
-    console.log("API Response:", fetchednotifications);
-
-    if (!fetchednotifications) {
-      console.log("fetchNotifications returned NULL/undefined");
-      return res.status(500).json({
-        message: "fetchNotifications returned undefined",
-      });
-    }
-
     console.log(
-      "Notifications Count:",
-      fetchednotifications.notifications
-        ? fetchednotifications.notifications.length
-        : 0
+      `[Notifications] org=${orgname}, code=${orgcode}, notifications=${fetchednotifications?.notifications?.length || 0}, organizations=${fetchednotifications?.organizations?.length || 0}`
     );
-
-    console.log(
-      "Organizations Count:",
-      fetchednotifications.organizations
-        ? fetchednotifications.organizations.length
-        : 0
-    );
-
-    if (
-      fetchednotifications.notifications &&
-      fetchednotifications.notifications.length > 0
-    ) {
-      console.log(
-        "First Notification:",
-        fetchednotifications.notifications[0]
-      );
-    }
-
-    console.log("===============================");
 
     res.status(200).json(fetchednotifications);
   } catch (error) {
-    console.error("FETCH NOTIFICATION ROUTE ERROR:");
-    console.error(error);
+    console.error("[Notifications Error]", error.message);
 
     res.status(500).json({
       message: "Failed to fetch notifications",
       error: error.message,
-      stack: error.stack,
     });
   }
 });
