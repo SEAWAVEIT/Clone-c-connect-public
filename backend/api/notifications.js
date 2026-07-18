@@ -14,12 +14,15 @@ export const fetchNotifications = async (orgname, orgcode) => {
         `Missing parameters: orgname=${orgname}, orgcode=${orgcode}`
       );
     }
+    
+console.log("Notification params:", orgname, orgcode);
 
-    const [rows] = await connection.execute(
-      `SELECT * FROM notifications WHERE orgname = ? AND orgcode = ?`,
-      [orgname, orgcode]
-    );
+const [rows] = await connection.execute(
+  `SELECT * FROM notifications WHERE orgname=? AND orgcode=?`,
+  [orgname, orgcode]
+);
 
+console.log("Notifications found:", rows.length);
     const [orgrows] = await connection.execute(
       `SELECT * FROM organizations WHERE orgname = ? AND orgcode = ?`,
       [orgname, orgcode]
