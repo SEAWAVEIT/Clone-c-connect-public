@@ -840,16 +840,31 @@ const AppHeader = () => {
                       Alerts
                     </CDropdownHeader>
                     <CRow>
-                      <div className="notification-area">
-                        {visibleNotifications &&
-                          visibleNotifications.map((notification, index) => (
-                            <CDropdownItem
-                              key={index}
-                              style={{ marginLeft: 20 }}
-                            >
-                              {notification.message}
-                            </CDropdownItem>
-                          ))}
+                      <div
+                        className="notification-area"
+                        style={{
+                          color: "black",
+                          background: "yellow",
+                          minHeight: "200px",
+                          padding: "10px",
+                          overflowY: "auto",
+                        }}
+                      >
+                        <h5>Total: {visibleNotifications.length}</h5>
+
+                        {visibleNotifications.map((notification, index) => (
+                          <div
+                            key={index}
+                            style={{
+                              border: "1px solid black",
+                              marginBottom: "8px",
+                              padding: "8px",
+                              color: "black",
+                            }}
+                          >
+                            {JSON.stringify(notification)}
+                          </div>
+                        ))}
                       </div>
                     </CRow>
                   </CTableBody>
