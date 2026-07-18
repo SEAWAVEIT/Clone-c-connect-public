@@ -334,6 +334,9 @@ const NotifyRender = () => {
           </thead>
           <tbody className="body-log">
             {/* admin */}
+console.log("allnotifications:", allnotifications);
+console.log("sortedItems:", sortedItems);
+console.log("Admin?", usernameoftheloggedin);
             {usernameoftheloggedin === "admin"
               ? sortedItems.map((item, index) => {
                   let status = "Pending";
