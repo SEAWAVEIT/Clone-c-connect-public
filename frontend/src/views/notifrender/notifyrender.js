@@ -149,7 +149,7 @@ const NotifyRender = () => {
       const branchName = localStorage.getItem("branchnameofemp");
       setCurrentBranch(branchName);
       fetchNotifications();
-    }, 1000); // Interval set to 1 second
+    }, 10000); // Interval set to 1 second
 
     return () => {
       clearInterval(intervalId);
@@ -168,6 +168,8 @@ const NotifyRender = () => {
         }
       );
       setallnotifications(response.data.notifications);
+      console.log("Notifications received:", response.data.notifications);
+      console.log("Notification count:", response.data.notifications.length);
     } catch (error) {
       console.log(error);
     }
@@ -356,6 +358,7 @@ const NotifyRender = () => {
                       status = "Approved";
                     }
                   }
+                console.log(item);
 
                   return (
                     <React.Fragment key={index}>
