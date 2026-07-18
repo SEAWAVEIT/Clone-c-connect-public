@@ -375,7 +375,7 @@ const AppHeader = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       removeExpiredNotifications();
-    }, 1000); // Check for expired notifications every second
+    }, 200000); // Check for expired notifications every second
 
     return () => {
       clearInterval(intervalId);
@@ -390,7 +390,7 @@ const AppHeader = () => {
       setCurrentBranch(branchName);
       fetchNotifications();
       dispatch({ type: 'toggleLatestMessage' })
-    }, 1000); // Interval set to 1 second
+    }, 200000); // Interval set to 1 second
 
     return () => {
       clearInterval(intervalId);
