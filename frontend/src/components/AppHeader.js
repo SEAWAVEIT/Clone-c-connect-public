@@ -421,22 +421,22 @@ const AppHeader = () => {
     };
   }, [isOpen]);
 
-  const fetchNotifications = async (req, res) => {
-    try {
-      const response = await axios.get(
-        `${API_BASE_URL}/fetchnotifications`,
-        {
-          params: {
-            orgname: localStorage.getItem("orgname"),
-            orgcode: localStorage.getItem("orgcode"),
-          },
-        }
-      );
-      setallnotifications(response.data.notifications);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const fetchNotifications = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/fetchnotifications`, {
+      params: {
+        orgname: localStorage.getItem("orgname"),
+        orgcode: localStorage.getItem("orgcode"),
+      },
+    });
+
+    setallnotifications(response.data.notifications);
+    setVisibleNotifications(response.data.notifications); 
+
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   useEffect(() => {
     fetchNotifications();
