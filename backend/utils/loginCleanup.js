@@ -33,7 +33,7 @@ export const cleanupExpiredLogins = async () => {
     const issuedAt = new Date(user.tokenIssuedAt);
 
     const tenHoursLater = new Date(
-      issuedAt.getTime() + 10 * 60 * 60 * 1000
+      issuedAt.getTime() + 1 * 60 * 60 * 1000 //changed to 1 hour as 10 is very big number
     );
 
     const midnight = new Date(issuedAt);
